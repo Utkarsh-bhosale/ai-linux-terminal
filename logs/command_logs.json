@@ -14,5 +14,77 @@
         "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
         "output": "main.py\n",
         "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:07:21",
+        "user_input": "create a folder named test",
+        "command": "mkdir test",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:07:38",
+        "user_input": "go to test folder",
+        "command": "cd test",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test",
+        "output": "[bold yellow]Changed directory to:[/bold yellow] /mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:09:24",
+        "user_input": "go to folder test",
+        "command": "cd test",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test",
+        "output": "[bold yellow]Changed directory to:[/bold yellow] /mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:09:44",
+        "user_input": "create a file test1.txt",
+        "command": "touch test1.txt",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test",
+        "output": "",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:09:57",
+        "user_input": "list all the files in this folder",
+        "command": "ls -a",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal/test",
+        "output": ".\n..\ntest1.txt\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:10:17",
+        "user_input": "move back to previous folder",
+        "command": "cd ..",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "[bold yellow]Changed directory to:[/bold yellow] /mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:10:31",
+        "user_input": "delete the test folder",
+        "command": "rm -r test",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:10:44",
+        "user_input": "list all the files in the current folder",
+        "command": "ls",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "logs\nmain.py\nrequirements.txt\nvenv\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 20:11:01",
+        "user_input": "go to folder test",
+        "command": "cd test",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "",
+        "error": "[Errno 2] No such file or directory: 'test'\n"
     }
 ]

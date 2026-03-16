@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 import json
 from datetime import datetime
 import readline
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+
+console = Console()
 
 HISTORY_FILE = ".terminal_history"
 
@@ -85,12 +90,13 @@ def execute_command(command):
             try:
                 path = cmd.split("cd ", 1)[1]
                 os.chdir(os.path.expanduser(path))
-                msg = f"Changed directory to: {os.getcwd()}"
-                print(msg)
+                msg = f"[bold yellow]Changed directory to:[/bold yellow] {os.getcwd()}"
+                console.print(msg)
                 full_output += msg + "\n"
             except Exception as e:
                 err = str(e)
-                print("ERROR:", err)
+                console.print("[bold red]ERROR[/bold red]")
+                console.print(result.stderr)
                 full_error += err + "\n"
             continue
 
@@ -101,10 +107,12 @@ def execute_command(command):
             text=True
         )
 
-        print("\nOUTPUT:\n", result.stdout)
+        console.print("\n[bold green]OUTPUT[/bold green]")
+        console.print(result.stdout)
 
         if result.stderr:
-            print("ERROR:\n", result.stderr)
+            console.print("[bold red]ERROR[/bold red]")
+            console.print(result.stderr)
 
         full_output += result.stdout
         full_error += result.stderr
@@ -138,13 +146,19 @@ def log_command(user_input, command, output, error):
         json.dump(logs, f, indent=4)
 
 def main():
+    
+    console.print(
+    Panel.fit(
+        "[bold cyan]AI Linux Terminal[/bold cyan]\n[green]Natural Language → Linux Commands[/green]",
+        border_style="cyan"
+        )
+    )
 
-    print("AI Linux Terminal")
-    print("Type 'exit' to quit\n")
+    console.print("[yellow]Type 'exit' to quit[/yellow]\n")
 
     while True:
 
-        user_input = input(f"{os.getcwd()} >>> ")
+        user_input = console.input(f"[bold magenta]{os.getcwd()}[/bold magenta] >>> ")
         
         readline.add_history(user_input)
 
@@ -154,7 +168,7 @@ def main():
 
         command = generate_command(user_input)
 
-        print("\nGenerated command:", command)
+        console.print(f"\n[bold blue]Generated command:[/bold blue] {command}")
 
         if not is_safe(command):
             print("Blocked: potentially dangerous command")
