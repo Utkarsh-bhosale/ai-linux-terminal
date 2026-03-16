@@ -2,6 +2,8 @@ from groq import Groq
 import subprocess
 import os
 from dotenv import load_dotenv
+import json
+from datetime import datetime
 
 load_dotenv()
 
@@ -31,6 +33,9 @@ conversation = [
 ]
 
 def generate_command(user_input):
+    
+  cwd = os.getcwd()
+  user_input = f"Current directory: {cwd}\nInstruction: {user_input}"
   
   conversation.append({
       "role":"user",
@@ -59,18 +64,70 @@ def is_safe(command):
 
 def execute_command(command):
 
-    result = subprocess.run(
-        command,
-        shell=True,
-        capture_output=True,
-        text=True
-    )
+    commands = command.split(";")
 
-    print("\nOUTPUT:\n")
-    print(result.stdout)
+    full_output = ""
+    full_error = ""
 
-    if result.stderr:
-        print("ERROR:\n", result.stderr)
+    for cmd in commands:
+        cmd = cmd.strip()
+
+        # handle cd separately
+        if cmd.startswith("cd"):
+            try:
+                path = cmd.split("cd ", 1)[1]
+                os.chdir(os.path.expanduser(path))
+                msg = f"Changed directory to: {os.getcwd()}"
+                print(msg)
+                full_output += msg + "\n"
+            except Exception as e:
+                err = str(e)
+                print("ERROR:", err)
+                full_error += err + "\n"
+            continue
+
+        result = subprocess.run(
+            cmd,
+            shell=True,
+            capture_output=True,
+            text=True
+        )
+
+        print("\nOUTPUT:\n", result.stdout)
+
+        if result.stderr:
+            print("ERROR:\n", result.stderr)
+
+        full_output += result.stdout
+        full_error += result.stderr
+
+    return full_output, full_error
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_FILE = os.path.join(BASE_DIR, "logs", "command_logs.json")
+os.makedirs(os.path.join(BASE_DIR, "logs"), exist_ok=True)
+
+def log_command(user_input, command, output, error):
+
+    log_entry = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "user_input": user_input,
+        "command": command,
+        "cwd": os.getcwd(),
+        "output": output,
+        "error": error
+    }
+
+    try:
+        with open(LOG_FILE, "r") as f:
+            logs = json.load(f)
+    except:
+        logs = []
+
+    logs.append(log_entry)
+
+    with open(LOG_FILE, "w") as f:
+        json.dump(logs, f, indent=4)
 
 def main():
 
@@ -79,7 +136,7 @@ def main():
 
     while True:
 
-        user_input = input(">>> ")
+        user_input = input(f"{os.getcwd()} >>> ")
 
         if user_input.lower() == "exit":
             break
@@ -95,7 +152,8 @@ def main():
         confirm = input("Execute? (y/n): ")
 
         if confirm.lower() == "y":
-            execute_command(command)
+            output, error = execute_command(command)
+            log_command(user_input, command, output, error) 
 
 if __name__ == "__main__":
     main()
