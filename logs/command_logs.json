@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "timestamp": "2026-03-16 19:52:12",
+        "user_input": "list all the files in this folder",
+        "command": "ls /mnt/d/UTKARSH\\ DOCS/toshiba/python\\ project/AI\\ project/ai-linux-terminal",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "logs\nmain.py\nrequirements.txt\nvenv\n",
+        "error": ""
+    },
+    {
+        "timestamp": "2026-03-16 19:52:58",
+        "user_input": "list only the python files",
+        "command": "ls *.py",
+        "cwd": "/mnt/d/UTKARSH DOCS/toshiba/python project/AI project/ai-linux-terminal",
+        "output": "main.py\n",
+        "error": ""
+    }
+]

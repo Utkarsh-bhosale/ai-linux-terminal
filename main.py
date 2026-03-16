@@ -4,6 +4,14 @@ import os
 from dotenv import load_dotenv
 import json
 from datetime import datetime
+import readline
+
+HISTORY_FILE = ".terminal_history"
+
+try:
+    readline.read_history_file(HISTORY_FILE)
+except FileNotFoundError:
+    pass
 
 load_dotenv()
 
@@ -137,8 +145,11 @@ def main():
     while True:
 
         user_input = input(f"{os.getcwd()} >>> ")
+        
+        readline.add_history(user_input)
 
         if user_input.lower() == "exit":
+            readline.write_history_file(HISTORY_FILE)
             break
 
         command = generate_command(user_input)
