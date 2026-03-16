@@ -8,10 +8,7 @@ load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # user_input = input("Enter task: ")
-
-def generate_command(user_input):
-
-  system_prompt = """
+system_prompt = """
   You are a Linux terminal expert.
 
   Convert natural language instructions into Linux commands.
@@ -21,21 +18,29 @@ def generate_command(user_input):
   - No explanations
   - Output a single command
   """
+  
+# Conversation history
+conversation = [
+    {"role": "system", "content": system_prompt},
+
+    {"role": "user", "content": "list files"},
+    {"role": "assistant", "content": "ls"},
+
+    {"role": "user", "content": "show disk usage"},
+    {"role": "assistant", "content": "df -h"}
+]
+
+def generate_command(user_input):
+  
+  conversation.append({
+      "role":"user",
+      "content":user_input
+  })  
 
   response = client.chat.completions.create(
-  model="llama-3.3-70b-versatile",
-  messages=[
-  {"role": "system", "content": system_prompt},
-
-  {"role": "user", "content": "list files"},
-  {"role": "assistant", "content": "ls"},
-
-  {"role": "user", "content": "show disk usage"},
-  {"role": "assistant", "content": "df -h"},
-
-  {"role": "user", "content": user_input}
-  ],
-  max_tokens=50
+    model="llama-3.3-70b-versatile",
+    messages=conversation,
+    max_tokens=50
   )
 
   command = response.choices[0].message.content
